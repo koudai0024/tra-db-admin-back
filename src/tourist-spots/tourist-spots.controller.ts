@@ -1,7 +1,15 @@
 import { TouristSpotsService } from './tourist-spots.service';
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { TouristSpot } from '@prisma/client';
-import { CreateTouristSpotDto } from './dto/create-tourist-spot.dto';
+import { InputTouristSpotDto } from './dto/input-tourist-spot.dto';
 
 @Controller('tourist-spots')
 export class TouristSpotsController {
@@ -19,9 +27,17 @@ export class TouristSpotsController {
 
   @Post()
   async create(
-    @Body() createTouristSpotDto: CreateTouristSpotDto,
+    @Body() createTouristSpotDto: InputTouristSpotDto,
   ): Promise<TouristSpot> {
     return this.touristSpotsService.create(createTouristSpotDto);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() data: InputTouristSpotDto,
+  ): Promise<TouristSpot> {
+    return this.touristSpotsService.update(id, data);
   }
 
   @Delete(':id')
