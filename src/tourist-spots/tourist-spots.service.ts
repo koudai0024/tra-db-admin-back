@@ -122,4 +122,33 @@ export class TouristSpotsService {
       },
     });
   }
+
+  async delete(id: string): Promise<TouristSpot> {
+    return this.prisma.touristSpot.delete({
+      where: {
+        id: id,
+      },
+      include: {
+        touristSpotToFacility: {
+          select: {
+            facility: true,
+          },
+        },
+        touristSpotToTag: {
+          select: {
+            tag: true,
+          },
+        },
+        touristSpotToStation: {
+          select: {
+            station: {
+              include: {
+                route: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }
