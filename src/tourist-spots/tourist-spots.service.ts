@@ -148,6 +148,7 @@ export class TouristSpotsService {
           },
         },
         touristSpotToFacility: {
+          disconnect: {},
           create: data.facilities?.map((facility) => {
             return {
               facility: {
@@ -160,6 +161,7 @@ export class TouristSpotsService {
           }),
         },
         touristSpotToTag: {
+          disconnect: {},
           create: data.tags?.map((tag) => {
             return {
               tag: {
@@ -188,6 +190,22 @@ export class TouristSpotsService {
   }
 
   async delete(id: string): Promise<TouristSpot> {
+    this.prisma.touristSpot.update({
+      where: {
+        id: id,
+      },
+      data: {
+        touristSpotToFacility: {
+          disconnect: {},
+        },
+        touristSpotToTag: {
+          disconnect: {},
+        },
+        touristSpotToStation: {
+          disconnect: {},
+        },
+      },
+    });
     return this.prisma.touristSpot.delete({
       where: {
         id: id,
