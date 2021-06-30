@@ -1,4 +1,4 @@
-export class CreateTouristSpotDto {
+export class InputTouristSpotDto {
   name: string;
   description?: string;
   imageUrl: string;
