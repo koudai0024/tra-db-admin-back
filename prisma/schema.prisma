@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model TouristSpot {
+  id String @id @default(uuid())
+  placeId String @map("place_id")
+  name String @db.VarChar(255)
+  description String? @db.Text
+  address String? 
+  businessHours String? @map("business_hours")
+  holiday String?
+  officialUrl String? @map("official_url")
+  imageUrl String? @map("image_url")
+  remarks String?
+  place Place @relation(fields: [placeId], references: [id])
+  articleToTouristSpot ArticleToTouristSpot[]
+  touristSpotToFacility TouristSpotToFacility[]
+  touristSpotToTag TouristSpotToTag[]
+  touristSpotToStation TouristSpotToStation[]
+  @@map("tourist_spots")
+}
+
+model Place {
+  id String @id @default(uuid())
+  name String @unique
+  touristSpot TouristSpot[]
+  route Route[]
+  @@map("places")
+}
+
+model ArticleToTouristSpot {
+  touristSpotId String @map("tourist_spot_id")
+  articleId String @map("article_id")
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  @@id([touristSpotId, articleId])
+  @@map("article_to_tourist_spot")
+}
+
+model TouristSpotToFacility {
+  touristSpotId String @map("tourist_spot_id")
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  facilityId String @map("facility_id")
+  facility Facility @relation(fields: [facilityId], references: [id])
+  @@id([touristSpotId, facilityId])
+  @@map("tourist_spot_facility")
+}
+
+model Facility {
+  id String @id @default(uuid())
+  name String @unique
+  touristSpotToFacility TouristSpotToFacility[]
+  @@map("facilities")
+}
+
+model TouristSpotToTag {
+  touristSpotId String @map("tourist_spot_id")
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  tagId String @map("tag_id")
+  tag Tag @relation(fields: [tagId], references: [id])
+  @@id([touristSpotId, tagId])
+  @@map("tourist_spot_to_tag")
+}
+
+model Tag {
+  id String @id @default(uuid())
+  name String @unique
+  touristSpotToTag TouristSpotToTag[]
+  @@map("tags")
+}
+
+model Route {
+  id String @id @default(uuid())
+  name String @unique
+  placeId String @map("place_id")
+  place Place @relation(fields: [placeId], references: [id])
+  station Station[]
+  @@map("routes")
+}
+
+model TouristSpotToStation {
+  touristSpotId String @map("tourist_spot_id")
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  stationId String @map("station_id")
+  station Station @relation(fields: [stationId], references: [id])
+  @@id([touristSpotId, stationId])
+  @@map("tourist_spot_to_station")
+}
+
+model Station {
+  id String @id @default(uuid())
+  name String
+  routeId String @map("route_id")
+  route Route @relation(fields: [routeId], references: [id])
+  touristSpotToStation TouristSpotToStation[]
+  @@unique([name, routeId])
+  @@map("stations")
+}
