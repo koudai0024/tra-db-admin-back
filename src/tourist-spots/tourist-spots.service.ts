@@ -33,6 +33,35 @@ export class TouristSpotsService {
     });
   }
 
+  async get(id: string): Promise<TouristSpot> {
+    return this.prisma.touristSpot.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        touristSpotToFacility: {
+          select: {
+            facility: true,
+          },
+        },
+        touristSpotToTag: {
+          select: {
+            tag: true,
+          },
+        },
+        touristSpotToStation: {
+          select: {
+            station: {
+              include: {
+                route: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   async create(data: CreateTouristSpotDto): Promise<TouristSpot> {
     return this.prisma.touristSpot.create({
       data: {
