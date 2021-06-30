@@ -8,6 +8,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
 }
 
 model TouristSpot {
@@ -40,16 +41,16 @@ model Place {
 model ArticleToTouristSpot {
   touristSpotId String @map("tourist_spot_id")
   articleId String @map("article_id")
-  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id], onDelete: Cascade)
   @@id([touristSpotId, articleId])
   @@map("article_to_tourist_spot")
 }
 
 model TouristSpotToFacility {
   touristSpotId String @map("tourist_spot_id")
-  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id], onDelete: Cascade)
   facilityId String @map("facility_id")
-  facility Facility @relation(fields: [facilityId], references: [id])
+  facility Facility @relation(fields: [facilityId], references: [id], onDelete: Cascade)
   @@id([touristSpotId, facilityId])
   @@map("tourist_spot_facility")
 }
@@ -63,9 +64,9 @@ model Facility {
 
 model TouristSpotToTag {
   touristSpotId String @map("tourist_spot_id")
-  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id], onDelete: Cascade)
   tagId String @map("tag_id")
-  tag Tag @relation(fields: [tagId], references: [id])
+  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
   @@id([touristSpotId, tagId])
   @@map("tourist_spot_to_tag")
 }
@@ -88,9 +89,9 @@ model Route {
 
 model TouristSpotToStation {
   touristSpotId String @map("tourist_spot_id")
-  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id])
+  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id], onDelete: Cascade)
   stationId String @map("station_id")
-  station Station @relation(fields: [stationId], references: [id])
+  station Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
   @@id([touristSpotId, stationId])
   @@map("tourist_spot_to_station")
 }
