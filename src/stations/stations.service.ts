@@ -36,4 +36,29 @@ export class StationsService {
       },
     });
   }
+
+  async delete(id: string): Promise<Station> {
+    this.prisma.station.update({
+      where: {
+        id: id,
+      },
+      data: {
+        touristSpotToStation: {
+          disconnect: {},
+        },
+      },
+    });
+    return this.prisma.station.delete({
+      where: {
+        id: id,
+      },
+      include: {
+        route: {
+          include: {
+            place: true,
+          },
+        },
+      },
+    });
+  }
 }

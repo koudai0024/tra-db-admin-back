@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { StationsService } from './stations.service';
 import { Station } from '@prisma/client';
 import { InputStationDto } from './dto/input-station.dto';
@@ -15,5 +15,10 @@ export class StationsController {
   @Post()
   async create(@Body() data: InputStationDto): Promise<Station> {
     return this.stationsService.create(data);
+  }
+
+  @Delete(':id')
+  async delete(id: string): Promise<Station> {
+    return this.stationsService.delete(id);
   }
 }
