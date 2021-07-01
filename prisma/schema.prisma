@@ -13,7 +13,7 @@ generator client {
 
 model TouristSpot {
   id String @id @default(uuid())
-  placeId String @map("place_id")
+  placeId String? @map("place_id")
   name String @db.VarChar(255)
   description String? @db.Text
   address String? 
@@ -22,7 +22,7 @@ model TouristSpot {
   officialUrl String? @map("official_url")
   imageUrl String? @map("image_url")
   remarks String?
-  place Place @relation(fields: [placeId], references: [id])
+  place Place? @relation(fields: [placeId], references: [id])
   articleToTouristSpot ArticleToTouristSpot[]
   touristSpotToFacility TouristSpotToFacility[]
   touristSpotToTag TouristSpotToTag[]
@@ -81,8 +81,8 @@ model Tag {
 model Route {
   id String @id @default(uuid())
   name String @unique
-  placeId String @map("place_id")
-  place Place @relation(fields: [placeId], references: [id])
+  placeId String? @map("place_id")
+  place Place? @relation(fields: [placeId], references: [id])
   station Station[]
   @@map("routes")
 }

@@ -19,6 +19,21 @@ export class StationsService {
     });
   }
 
+  async get(id: string): Promise<Station> {
+    return this.prisma.station.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        route: {
+          include: {
+            place: true,
+          },
+        },
+      },
+    });
+  }
+
   async create(data: InputStationDto): Promise<Station> {
     return this.prisma.station.create({
       data: {

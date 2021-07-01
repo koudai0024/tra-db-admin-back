@@ -12,6 +12,11 @@ export class StationsController {
     return this.stationsService.all();
   }
 
+  @Get(':id')
+  async get(id: string): Promise<Station> {
+    return this.stationsService.get(id);
+  }
+
   @Post()
   async create(@Body() data: InputStationDto): Promise<Station> {
     return this.stationsService.create(data);
