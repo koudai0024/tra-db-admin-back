@@ -7,9 +7,14 @@ import { InputTouristSpotDto } from './dto/input-tourist-spot.dto';
 export class TouristSpotsService {
   constructor(private prisma: PrismaService) {}
 
+  async total(): Promise<number> {
+    return this.prisma.touristSpot.count();
+  }
+
   async all(): Promise<TouristSpot[]> {
     return this.prisma.touristSpot.findMany({
       include: {
+        place: true,
         touristSpotToFacility: {
           select: {
             facility: true,

@@ -7,17 +7,27 @@ import {
   Param,
   Post,
   Put,
+  Response,
 } from '@nestjs/common';
 import { TouristSpot } from '@prisma/client';
 import { InputTouristSpotDto } from './dto/input-tourist-spot.dto';
+import { Response as Res } from 'express';
 
 @Controller('tourist-spots')
 export class TouristSpotsController {
   constructor(private readonly touristSpotsService: TouristSpotsService) {}
 
   @Get('all')
-  async all(): Promise<TouristSpot[]> {
-    return this.touristSpotsService.all();
+  async all(@Response() res: Res): Promise<Res<any, Record<string, any>>> {
+    const total = await this.touristSpotsService.total();
+    const json = await this.touristSpotsService.all();
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': total,
+      })
+      .json(json);
+    // return this.touristSpotsService.all();
   }
 
   @Get(':id')
