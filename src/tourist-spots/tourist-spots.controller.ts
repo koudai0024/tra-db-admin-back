@@ -17,7 +17,7 @@ import { Response as Res } from 'express';
 export class TouristSpotsController {
   constructor(private readonly touristSpotsService: TouristSpotsService) {}
 
-  @Get('all')
+  @Get()
   async all(@Response() res: Res): Promise<Res<any, Record<string, any>>> {
     const total = await this.touristSpotsService.total();
     const json = await this.touristSpotsService.all();

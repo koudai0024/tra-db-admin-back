@@ -15,16 +15,8 @@ export class TouristSpotsService {
     return this.prisma.touristSpot.findMany({
       include: {
         place: true,
-        touristSpotToFacility: {
-          select: {
-            facility: true,
-          },
-        },
-        touristSpotToTag: {
-          select: {
-            tag: true,
-          },
-        },
+        facilities: true,
+        tags: true,
         touristSpotToStation: {
           select: {
             station: {
@@ -44,16 +36,8 @@ export class TouristSpotsService {
         id: id,
       },
       include: {
-        touristSpotToFacility: {
-          select: {
-            facility: true,
-          },
-        },
-        touristSpotToTag: {
-          select: {
-            tag: true,
-          },
-        },
+        facilities: true,
+        tags: true,
         touristSpotToStation: {
           select: {
             station: {
@@ -88,42 +72,26 @@ export class TouristSpotsService {
             },
           },
         },
-        touristSpotToFacility: {
-          create: data.facilities?.map((facility) => {
+        facilities: {
+          connectOrCreate: data.facilities.map((facility) => {
             return {
-              facility: {
-                connectOrCreate: {
-                  where: { name: facility },
-                  create: { name: facility },
-                },
-              },
+              where: { name: facility.name },
+              create: { name: facility.name },
             };
           }),
         },
-        touristSpotToTag: {
-          create: data.tags?.map((tag) => {
+        tags: {
+          connectOrCreate: data.tags.map((tag) => {
             return {
-              tag: {
-                connectOrCreate: {
-                  where: { name: tag },
-                  create: { name: tag },
-                },
-              },
+              where: { name: tag.name },
+              create: { name: tag.name },
             };
           }),
         },
       },
       include: {
-        touristSpotToFacility: {
-          include: {
-            facility: true,
-          },
-        },
-        touristSpotToTag: {
-          include: {
-            tag: true,
-          },
-        },
+        facilities: true,
+        tags: true,
       },
     });
   }
@@ -152,44 +120,28 @@ export class TouristSpotsService {
             },
           },
         },
-        touristSpotToFacility: {
+        facilities: {
           disconnect: {},
-          create: data.facilities?.map((facility) => {
+          connectOrCreate: data.facilities.map((facility) => {
             return {
-              facility: {
-                connectOrCreate: {
-                  where: { name: facility },
-                  create: { name: facility },
-                },
-              },
+              where: { name: facility.name },
+              create: { name: facility.name },
             };
           }),
         },
-        touristSpotToTag: {
+        tags: {
           disconnect: {},
-          create: data.tags?.map((tag) => {
+          connectOrCreate: data.tags.map((tag) => {
             return {
-              tag: {
-                connectOrCreate: {
-                  where: { name: tag },
-                  create: { name: tag },
-                },
-              },
+              where: { name: tag.name },
+              create: { name: tag.name },
             };
           }),
         },
       },
       include: {
-        touristSpotToFacility: {
-          include: {
-            facility: true,
-          },
-        },
-        touristSpotToTag: {
-          include: {
-            tag: true,
-          },
-        },
+        facilities: true,
+        tags: true,
       },
     });
   }
@@ -200,10 +152,10 @@ export class TouristSpotsService {
         id: id,
       },
       data: {
-        touristSpotToFacility: {
+        facilities: {
           disconnect: {},
         },
-        touristSpotToTag: {
+        tags: {
           disconnect: {},
         },
         touristSpotToStation: {
@@ -216,16 +168,8 @@ export class TouristSpotsService {
         id: id,
       },
       include: {
-        touristSpotToFacility: {
-          select: {
-            facility: true,
-          },
-        },
-        touristSpotToTag: {
-          select: {
-            tag: true,
-          },
-        },
+        facilities: true,
+        tags: true,
         touristSpotToStation: {
           select: {
             station: {

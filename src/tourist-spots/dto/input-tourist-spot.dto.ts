@@ -8,6 +8,10 @@ export class InputTouristSpotDto {
   officialUrl?: string;
   remarks?: string;
   place: string;
-  facilities?: Array<string>;
-  tags?: Array<string>;
+  facilities?: Array<{
+    name: string;
+  }>;
+  tags?: Array<{
+    name: string;
+  }>;
 }

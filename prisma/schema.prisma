@@ -23,9 +23,9 @@ model TouristSpot {
   imageUrl String? @map("image_url")
   remarks String?
   place Place? @relation(fields: [placeId], references: [id])
-  articleToTouristSpot ArticleToTouristSpot[]
-  touristSpotToFacility TouristSpotToFacility[]
-  touristSpotToTag TouristSpotToTag[]
+  articles articles[]
+  facilities Facility[] @relation("tourist_spot_facility")
+  tags Tag[] @relation("tourist_spot_tag")
   touristSpotToStation TouristSpotToStation[]
   @@map("tourist_spots")
 }
@@ -38,7 +38,7 @@ model Place {
   @@map("places")
 }
 
-model ArticleToTouristSpot {
+model articles {
   touristSpotId String @map("tourist_spot_id")
   articleId String @map("article_id")
   touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id], onDelete: Cascade)
@@ -46,35 +46,19 @@ model ArticleToTouristSpot {
   @@map("article_to_tourist_spot")
 }
 
-model TouristSpotToFacility {
-  touristSpotId String @map("tourist_spot_id")
-  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id], onDelete: Cascade)
-  facilityId String @map("facility_id")
-  facility Facility @relation(fields: [facilityId], references: [id], onDelete: Cascade)
-  @@id([touristSpotId, facilityId])
-  @@map("tourist_spot_facility")
-}
 
 model Facility {
   id String @id @default(uuid())
   name String @unique
-  touristSpotToFacility TouristSpotToFacility[]
+  touristSpots TouristSpot[] @relation("tourist_spot_facility")
   @@map("facilities")
 }
 
-model TouristSpotToTag {
-  touristSpotId String @map("tourist_spot_id")
-  touristSpot TouristSpot @relation(fields: [touristSpotId], references: [id], onDelete: Cascade)
-  tagId String @map("tag_id")
-  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  @@id([touristSpotId, tagId])
-  @@map("tourist_spot_to_tag")
-}
 
 model Tag {
   id String @id @default(uuid())
   name String @unique
-  touristSpotToTag TouristSpotToTag[]
+  touristSpots TouristSpot[] @relation("tourist_spot_tag")
   @@map("tags")
 }
 
