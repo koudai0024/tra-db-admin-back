@@ -122,7 +122,7 @@ export class TouristSpotsService {
           },
         },
         facilities: {
-          disconnect: {},
+          deleteMany: {},
           connectOrCreate: data.facilities?.map((facility) => {
             return {
               where: { name: facility.name },
@@ -131,7 +131,7 @@ export class TouristSpotsService {
           }),
         },
         tags: {
-          disconnect: {},
+          deleteMany: {},
           connectOrCreate: data.tags?.map((tag) => {
             return {
               where: { name: tag.name },
@@ -141,6 +141,7 @@ export class TouristSpotsService {
         },
       },
       include: {
+        place: true,
         facilities: true,
         tags: true,
       },
