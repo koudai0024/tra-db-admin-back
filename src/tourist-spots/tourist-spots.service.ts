@@ -36,6 +36,7 @@ export class TouristSpotsService {
         id: id,
       },
       include: {
+        place: true,
         facilities: true,
         tags: true,
         touristSpotToStation: {
@@ -65,15 +66,15 @@ export class TouristSpotsService {
         place: {
           connectOrCreate: {
             where: {
-              name: data.place,
+              name: data.place.name,
             },
             create: {
-              name: data.place,
+              name: data.place.name,
             },
           },
         },
         facilities: {
-          connectOrCreate: data.facilities.map((facility) => {
+          connectOrCreate: data.facilities?.map((facility) => {
             return {
               where: { name: facility.name },
               create: { name: facility.name },
@@ -81,7 +82,7 @@ export class TouristSpotsService {
           }),
         },
         tags: {
-          connectOrCreate: data.tags.map((tag) => {
+          connectOrCreate: data.tags?.map((tag) => {
             return {
               where: { name: tag.name },
               create: { name: tag.name },
@@ -113,16 +114,16 @@ export class TouristSpotsService {
         place: {
           connectOrCreate: {
             where: {
-              name: data.place,
+              name: data.place.name,
             },
             create: {
-              name: data.place,
+              name: data.place.name,
             },
           },
         },
         facilities: {
           disconnect: {},
-          connectOrCreate: data.facilities.map((facility) => {
+          connectOrCreate: data.facilities?.map((facility) => {
             return {
               where: { name: facility.name },
               create: { name: facility.name },
@@ -131,7 +132,7 @@ export class TouristSpotsService {
         },
         tags: {
           disconnect: {},
-          connectOrCreate: data.tags.map((tag) => {
+          connectOrCreate: data.tags?.map((tag) => {
             return {
               where: { name: tag.name },
               create: { name: tag.name },

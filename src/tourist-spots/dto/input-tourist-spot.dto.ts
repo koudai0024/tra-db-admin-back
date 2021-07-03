@@ -7,7 +7,9 @@ export class InputTouristSpotDto {
   holiday?: string;
   officialUrl?: string;
   remarks?: string;
-  place: string;
+  place: {
+    name: string;
+  };
   facilities?: Array<{
     name: string;
   }>;
