@@ -6,7 +6,13 @@ import { RoutesModule } from './routes/routes.module';
 import { PlacesModule } from './places/places.module';
 
 @Module({
-  imports: [PrismaModule, TouristSpotsModule, StationsModule, RoutesModule, PlacesModule],
+  imports: [
+    PrismaModule,
+    TouristSpotsModule,
+    StationsModule,
+    RoutesModule,
+    PlacesModule,
+  ],
   controllers: [],
   providers: [],
 })
