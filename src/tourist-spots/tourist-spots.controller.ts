@@ -39,7 +39,6 @@ export class TouristSpotsController {
   async create(
     @Body() createTouristSpotDto: InputTouristSpotDto,
   ): Promise<TouristSpot> {
-    console.log(createTouristSpotDto);
     return this.touristSpotsService.create(createTouristSpotDto);
   }
 
@@ -48,7 +47,6 @@ export class TouristSpotsController {
     @Param('id') id: string,
     @Body() data: InputTouristSpotDto,
   ): Promise<TouristSpot> {
-    console.log(data);
     return this.touristSpotsService.update(id, data);
   }
 
