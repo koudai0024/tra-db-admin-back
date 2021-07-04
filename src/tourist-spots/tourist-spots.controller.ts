@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Response,
 } from '@nestjs/common';
 import { TouristSpot } from '@prisma/client';
@@ -18,9 +19,31 @@ export class TouristSpotsController {
   constructor(private readonly touristSpotsService: TouristSpotsService) {}
 
   @Get()
-  async all(@Response() res: Res): Promise<Res<any, Record<string, any>>> {
+  async all(
+    @Response() res: Res,
+    @Query('sort') order: string,
+    @Query('range') paging: string,
+  ): Promise<Res<any, Record<string, any>>> {
+    const transdOrder = order
+      .replace('[', '')
+      .replace(']', '')
+      .replace(/\"/g, '')
+      .split(',');
+    const transdPaging = paging
+      .replace('[', '')
+      .replace(']', '')
+      .replace(/\"/g, '')
+      .split(',');
+
+    console.log(paging);
+
     const total = await this.touristSpotsService.total();
-    const json = await this.touristSpotsService.all();
+    const json = await this.touristSpotsService.all(
+      transdOrder[0],
+      transdOrder[1],
+      transdPaging,
+    );
+
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',

@@ -11,8 +11,29 @@ export class TouristSpotsService {
     return this.prisma.touristSpot.count();
   }
 
-  async all(): Promise<TouristSpot[]> {
+  async all(
+    sort: string,
+    orderBy: string,
+    paging: Array<string>,
+  ): Promise<TouristSpot[]> {
+    let sortKey = sort || 'createdAt';
+    const orderByValue = orderBy.toLowerCase() || 'desc';
+    console.log(paging);
+
+    const limit = Number(paging[1]) - Number(paging[0]) + 1;
+
+    if (sortKey == 'place.name') {
+      sortKey = 'placeId';
+    }
+
     return this.prisma.touristSpot.findMany({
+      orderBy: [
+        {
+          [sortKey]: orderByValue,
+        },
+      ],
+      take: limit,
+      skip: Number(paging[0]),
       include: {
         place: true,
         facilities: true,
